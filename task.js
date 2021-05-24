@@ -40,6 +40,10 @@ class Stack {
     }
 
     toArray() {
-        return [...this.stack]
+        const arr = []
+        for (let i = 0; i < this.length; i++) {
+            arr.push(this.stack[i])
+        }
+        return arr
     }
 }

@@ -6,76 +6,40 @@ class Stack {
     static fromIterable(arr) {
         if (!arr[Symbol.iterator]) throw new Error("not iterable")
         const stack = new Stack(arr.length)
-        for (let i = 0; i < arr.length; i++) {
-            stack.stack[i] = arr[i]
-        }
+        arr.forEach(el => stack.push(el))
         return stack
     }
-
 
     constructor(length = 10) {
         if (!isValidNumber(length)) throw new Error("not valid")
         this.length = length
-        this.stack = []
-        for (let i = 0; i < this.length; i++) {
-            this.stack[i] = null
-        }
+        this.stack = new Array(length).fill(null)
+        this.elems = 0
     }
 
     push(el) {
-        for (let i = 0; i < this.length; i++) {
-            if (this.stack[i] === null) return this.stack[i] = el;
-        }
-        throw new Error("stack is full")
+        if (this.elems >= this.length) throw new Error("stack is full")
+        this.stack[this.elems] = el
+        this.elems++
     }
 
     pop() {
-        for (let i = (this.length - 1); i > -1; i--) {
-            if (this.stack[i] !== null) {
-                const pop = this.stack[i]
-                this.stack[i] = null;
-                return pop
-            }
-
-        }
-        throw new Error("stack is empty")
+        const val = this.peek()
+        if (val === null) throw new Error("stack is empty")
+        this.stack[this.elems - 1] = null
+        this.elems--
+        return val
     }
 
     peek() {
-        for (let i = (this.length - 1); i > -1; i--) {
-            if (this.stack[i] !== null) return this.stack[i];
-        }
-        return null
+        return this.stack[Math.max(0, this.elems - 1)]
     }
 
     isEmpty() {
-        return !this.stack[0]
+        return this.elems === 0
     }
 
     toArray() {
-        const arr = []
-        for (let i = 0; i < this.length; i++) {
-            arr.push(this.stack[i])
-        }
-        return arr
+        return [...this.stack]
     }
-
 }
-
-const stack = new Stack(3)
-
-console.log(stack)
-stack.push(33)
-stack.push(22)
-stack.push(111)
-console.log(stack)
-console.log(stack.pop())
-// console.log(stack.pop())
-console.log(stack.pop())
-console.log(stack.peek())
-console.log(stack.isEmpty())
-console.log(stack.toArray())
-console.log(stack)
-
-const ry = Stack.fromIterable([1, 2, 3, 4, 5, 6])
-console.log(ry.peek())
